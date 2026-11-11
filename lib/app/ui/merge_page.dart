@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_platform_interface/file_picker_platform_interface.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:open_filex/open_filex.dart';
@@ -45,7 +46,7 @@ class _MergePageState extends State<MergePage> {
 
   // ── 添加批次（任何时候都可调用）──
   Future<void> _addDirectory() async {
-    final dir = await FilePicker.platform.getDirectoryPath(
+    final dir = await FilePickerPlatform.instance.getDirectoryPath(
       dialogTitle: '选择包含 TS 分片的目录',
     );
     if (dir == null) return;
@@ -69,20 +70,19 @@ class _MergePageState extends State<MergePage> {
   }
 
   Future<void> _addFiles() async {
-    final result = await FilePicker.platform.pickFiles(
+    final files = await FilePickerPlatform.instance.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['ts'],
-      allowMultiple: true,
     );
-    if (result == null || result.files.isEmpty) return;
-    final files = result.files.map((f) => f.path!).toList();
-    if (!mounted || files.isEmpty) return;
+    if (files.isEmpty) return;
+    final paths = files.map((f) => f.path!).toList();
+    if (!mounted || paths.isEmpty) return;
     setState(() {
       _batches.add(MergeBatch(
         id: 'batch_${DateTime.now().millisecondsSinceEpoch}',
         mode: 'files',
-        files: files,
-        label: '${files.length} 个文件 · ${files.take(2).map((p) => p.split('/').last).join(', ')}${files.length > 2 ? '…' : ''}',
+        files: paths,
+        label: '${paths.length} 个文件 · ${paths.take(2).map((p) => p.split('/').last).join(', ')}${paths.length > 2 ? '…' : ''}',
       ));
     });
     // 不再自动启动下一个，由用户控制

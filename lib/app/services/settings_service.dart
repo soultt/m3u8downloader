@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:file_picker_platform_interface/file_picker_platform_interface.dart';
 import '../models/settings.dart';
 
 const String settingsBoxName = 'app_settings';
@@ -70,7 +71,7 @@ class SettingsService extends ChangeNotifier {
   /// 选择保存目录
   Future<String?> pickSaveDirectory() async {
     try {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+      String? selectedDirectory = await FilePickerPlatform.instance.getDirectoryPath(
         dialogTitle: '选择下载保存目录',
       );
       
@@ -87,7 +88,7 @@ class SettingsService extends ChangeNotifier {
   /// 选择输出目录
   Future<String?> pickOutputDirectory() async {
     try {
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath(
+      String? selectedDirectory = await FilePickerPlatform.instance.getDirectoryPath(
         dialogTitle: '选择合并输出目录',
       );
       
@@ -104,14 +105,14 @@ class SettingsService extends ChangeNotifier {
   /// 选择 FFmpeg 可执行文件
   Future<String?> pickFFmpegPath() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final files = await FilePickerPlatform.instance.pickFiles(
         dialogTitle: '选择 FFmpeg 可执行文件',
         type: FileType.custom,
         allowedExtensions: ['exe', 'bin'],
       );
       
-      if (result != null && result.files.isNotEmpty) {
-        final path = result.files.first.path;
+      if (files.isNotEmpty) {
+        final path = files.first.path;
         if (path != null) {
           await setFFmpegPath(path);
           return path;
