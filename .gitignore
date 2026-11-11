@@ -1,50 +1,21 @@
-﻿# Dart/Flutter
+﻿# Build output
+build/
 .dart_tool/
 .packages
-build/
-*.dart_tool
-.flutter-plugins
-.flutter-plugins-dependencies
+*.gem
 
-# IDE
-.idea/
-.vscode/
-*.iml
+# Windows packages (NuGet cache) - keep for build reproducibility
+!windows/packages/
 
-# OS
-.DS_Store
-Thumbs.db
+# NSIS installer source (keep, but not the zip files)
+!installer.nsi
+nsis*.zip
 
-# 编译产物
-*.apk
-*.aab
-*.ipa
-*.exe
-*.dmg
-*.app
+# Android build
+android/app/build/
 
-# 临时文件
-*.log
-*.tmp
-scripts/
+# macOS build
+macos/Build/
 
-# 本地配置
-*.local.yaml
-local.properties
-
-# 依赖缓存
-pubspec.lock
-
-# 文档/调试残留（保留 README.md）
-ANDRIOD_DEBUG_FINAL.md
-ANDROID_DEBUG_SUMMARY.md
-CHINESE_FONT_FIX.md
-CODE_REVIEW.md
-CODE_REVIEW_COMPLETE.md
-FIXES_SUMMARY.md
-MOBILE_FIXES_PLAN.md
-REVIEW_FIXES_PLAN.md
-TODO.md
-FLUTTER_DESIGN.md
-FLUTTER_MIGRATION_GUIDE.md
-build.yaml
+# Linux build
+linux/.pub-cache/
