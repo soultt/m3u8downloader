@@ -47,14 +47,17 @@ Section "Main Application" SecMain
     
     ; Flutter runtime files
     File "F:\App\M3u8Download\build\windows\x64\dist\flutter_windows.dll"
-    File "F:\App\M3u8Download\build\windows\x64\dist\icudtl.dat"
     
     ; All DLL files from dist (recursive)
     File /r "F:\App\M3u8Download\build\windows\x64\dist\*.dll"
     
-    ; Data directory (Flutter assets) - copy without recursion for better control
+    ; Data directory (Flutter assets + AOT data)
     SetOutPath "$INSTDIR\data"
     CopyFiles /SILENT "F:\App\M3u8Download\build\windows\x64\dist\data\*.*" "$INSTDIR\data\"
+    ; AOT snapshot (app.so) - must be in data folder for Windows
+    File "F:\App\M3u8Download\build\windows\app.so"
+    ; ICU data
+    File "F:\App\M3u8Download\build\windows\x64\dist\icudtl.dat"
     CopyFiles /SILENT "F:\App\M3u8Download\build\windows\x64\dist\data\flutter_assets\*" "$INSTDIR\data\flutter_assets\"
     CopyFiles /SILENT "F:\App\M3u8Download\build\windows\x64\dist\data\flutter_assets\assets\*" "$INSTDIR\data\flutter_assets\assets\"
     CopyFiles /SILENT "F:\App\M3u8Download\build\windows\x64\dist\data\flutter_assets\fonts\*" "$INSTDIR\data\flutter_assets\fonts\"
